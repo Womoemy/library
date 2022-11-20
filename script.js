@@ -1,124 +1,81 @@
 let myLibrary = [];
 
-function Book(title, author, pages, readStatus) {
-  // the constructor...
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.readStatus = readStatus;
+class Book {
+    constructor(title, author, pages, readStatus) {
+        // the constructor...
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.readStatus = readStatus;
+    }
 }
 
-function addBookToLibrary() {
-  // do stuff here
-
-}
-
-
-// My changes
-
-// function showAddForm() {
-//   const addBookForm = document.getElementById("addBookForm");
-//   if (addBookForm.style.display === "none") {
-//     addBookForm.style.display = "block";
-//   } else {
-//     addBookForm.style.display = "none";
-//   }
-// }
-
-
+// DISPLAY ADD BOOK FORM LOGIC
 const addBookBtn = document.querySelector(".add-book-btn");
 const addBookForm = document.getElementById("addBookForm");
 
-
-// SHOW ADD BOOK FORM
-// function to show add new book form
 addBookBtn.addEventListener('click', () => {
-  if (addBookForm.style.display === "none") {
-    addBookForm.style.display = "block";
-  } else {
-    addBookForm.style.display = "none";
-  }
+    if (addBookForm.style.display === "none") {
+        addBookForm.style.display = "block";
+    } else {
+        addBookForm.style.display = "none";
+    }
 });
 
-// HANDLE SUBMIT FUNCTION (POSSIBLE ADD TO LIBRARY FUNCTION LOGIC)
-function handleSubmit(event) {
-  // this function becomes the new addBookToLibrary function...
-  event.preventDefault();
-  const addFormData = new FormData(event.target);
-  const addFormValues = Object.fromEntries(addFormData.entries());
-  addFormValues.readStatus = addFormData.getAll("readStatus")
+// ADD BOOK TO LIBRARY LOGIC
+function addBookToLibrary(e) {
+    e.preventDefault();
+    // collect form data...
+    const addFormData = new FormData(e.target);
+    const addFormValues = Object.fromEntries(addFormData.entries());
+    addFormValues.readStatus = addFormData.ge("readStatus");
 
-  // console.log(addFormValues);
-  myLibrary.push(addFormValues);
+    // create new book from constructor with form data values...
+    const newBook = new Book(addFormValues.title, addFormValues.author, addFormValues.pages, addFormValues.readStatus);
+    myLibrary.push(newBook);
 
-  addBookForm.reset();
+    // clear form...
+    addBookForm.reset();
 
-  let theTitle;
-  let theAuthor;
-  let thePagesNo;
-  let theReadStatus;
+    
+    let theTitle;
+    let theAuthor;
+    let thePagesNo;
+    let theReadStatus;
 
-  for (let book in myLibrary) {
-      theTitle = myLibrary[book].title;
-      theAuthor = myLibrary[book].author;
-      thePagesNo = myLibrary[book].pages;
-      theReadStatus = myLibrary[book].readStatus;
-  }
+    // loop through myLibrary array and store values in variables...
+    for (let book in myLibrary) {
+        theTitle = myLibrary[book].title;
+        theAuthor = myLibrary[book].author;
+        thePagesNo = myLibrary[book].pages;
+        theReadStatus = myLibrary[book].readStatus;
+    }
 
-const main = document.querySelector("main");
-const bookContainer = document.querySelector(".container");
-const bookCard = document.createElement("div")
-let bookTitle = document.createElement("h3");
-let bookAuthor = document.createElement("p");
-let bookPages = document.createElement("p");
-let bookPagesNo = document.createElement("span");
-let readStatus = document.createElement("button");
-let deleteBook = document.createElement("button");
+    // create book card div and populate with content...
+    const main = document.querySelector("main");
+    const bookContainer = document.querySelector(".container");
+    const bookCard = document.createElement("div")
+    let bookTitle_h3 = document.createElement("h3");
+    let bookAuthor_p = document.createElement("p");
+    let bookPages_p = document.createElement("p");
+    let bookPagesNo_span = document.createElement("span");
+    let readStatus_btn = document.createElement("button");
+    let deleteBook_btn = document.createElement("button");
 
-bookTitle.textContent = theTitle;
-bookAuthor.textContent = theAuthor;
-bookPagesNo.textContent = thePagesNo;
-bookPages.append(bookPagesNo, " pages")
-readStatus.textContent = theReadStatus;
-deleteBook.textContent = 'Remove';
+    bookTitle_h3.textContent = theTitle;
+    bookAuthor_p.textContent = theAuthor;
+    bookPagesNo_span.textContent = thePagesNo;
+    bookPages_p.append(bookPagesNo_span, " pages")
+    readStatus_btn.textContent = theReadStatus;
+    deleteBook_btn.textContent = 'Remove';
 
-bookCard.appendChild(bookTitle);
-bookCard.appendChild(bookAuthor);
-bookCard.appendChild(bookPages);
-bookCard.appendChild(readStatus);
-bookCard.appendChild(deleteBook);
+    bookCard.appendChild(bookTitle_h3);
+    bookCard.appendChild(bookAuthor_p);
+    bookCard.appendChild(bookPages_p);
+    bookCard.appendChild(readStatus_btn);
+    bookCard.appendChild(deleteBook_btn);
 
-main.appendChild(bookContainer);
-bookContainer.appendChild(bookCard);
+    main.appendChild(bookContainer);
+    bookContainer.appendChild(bookCard);
 }
-// const addBookForm = document.getElementById("addBookForm");
-addBookForm.addEventListener('submit', handleSubmit);
-
-// CREATE AND DISPLAY NEW BOOK CARD
-// const main = document.querySelector("main");
-// const bookContainer = document.querySelector(".container");
-// const bookCard = document.createElement("div")
-// let bookTitle = document.createElement("h3");
-// let bookAuthor = document.createElement("p");
-// let bookPages = document.createElement("p");
-// let bookPagesNo = document.createElement("span");
-// let readStatus = document.createElement("button");
-// let deleteBook = document.createElement("button");
-
-// bookTitle.textContent = 'I am Zlatan';
-// bookAuthor.textContent = 'Zlatan Ibrahimovic';
-// bookPagesNo.textContent = '214';
-// bookPages.append(bookPagesNo, " pages")
-// readStatus.textContent = 'Not Read';
-// deleteBook.textContent = 'Remove';
-
-// bookCard.appendChild(bookTitle);
-// bookCard.appendChild(bookAuthor);
-// bookCard.appendChild(bookPages);
-// bookCard.appendChild(readStatus);
-// bookCard.appendChild(deleteBook);
-
-// main.appendChild(bookContainer);
-// bookContainer.appendChild(bookCard);
-
-// console.log(myLibrary);
+addBookForm.addEventListener('submit', addBookToLibrary);
