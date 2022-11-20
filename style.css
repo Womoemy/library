@@ -4,3 +4,7 @@
     --color-bg: #E1C7A2;
     --color-off-white: #F2EBE3;
 }
+
+#addBookForm {
+    display: none;
+}
