@@ -15,12 +15,14 @@ const addBookBtn = document.querySelector(".add-book-btn");
 const addBookForm = document.getElementById("addBookForm");
 
 addBookBtn.addEventListener('click', () => {
-    if (addBookForm.style.display === "none") {
+    if (addBookForm.style.display !== "block") {
         addBookForm.style.display = "block";
     } else {
         addBookForm.style.display = "none";
     }
 });
+
+addBookForm.addEventListener('submit', addBookToLibrary);
 
 // ADD BOOK TO LIBRARY LOGIC
 function addBookToLibrary(e) {
@@ -28,7 +30,7 @@ function addBookToLibrary(e) {
     // collect form data...
     const addFormData = new FormData(e.target);
     const addFormValues = Object.fromEntries(addFormData.entries());
-    addFormValues.readStatus = addFormData.ge("readStatus");
+    addFormValues.readStatus = addFormData.get("readStatus");
 
     // create new book from constructor with form data values...
     const newBook = new Book(addFormValues.title, addFormValues.author, addFormValues.pages, addFormValues.readStatus);
@@ -37,7 +39,13 @@ function addBookToLibrary(e) {
     // clear form...
     addBookForm.reset();
 
-    
+    booksCard();
+}
+
+const main = document.querySelector("main");
+const bookContainer = document.querySelector(".container");
+
+function booksCard() {
     let theTitle;
     let theAuthor;
     let thePagesNo;
@@ -51,10 +59,8 @@ function addBookToLibrary(e) {
         theReadStatus = myLibrary[book].readStatus;
     }
 
-    // create book card div and populate with content...
-    const main = document.querySelector("main");
-    const bookContainer = document.querySelector(".container");
-    const bookCard = document.createElement("div")
+
+    const bookCard = document.createElement("div");
     let bookTitle_h3 = document.createElement("h3");
     let bookAuthor_p = document.createElement("p");
     let bookPages_p = document.createElement("p");
@@ -62,6 +68,7 @@ function addBookToLibrary(e) {
     let readStatus_btn = document.createElement("button");
     let deleteBook_btn = document.createElement("button");
 
+    bookCard.className = "book-card";
     bookTitle_h3.textContent = theTitle;
     bookAuthor_p.textContent = theAuthor;
     bookPagesNo_span.textContent = thePagesNo;
@@ -77,5 +84,23 @@ function addBookToLibrary(e) {
 
     main.appendChild(bookContainer);
     bookContainer.appendChild(bookCard);
+
+    myLibrary.forEach((book, index) => {
+        bookCard.dataset.bookid = `${index}`;
+    }); 
+    
+    // console.log(readStatus_btn.textContent);
+
+    // readStatus_btn.addEventListener('click', (e) => {
+    //     if(e.target.textContent !== "Read") {
+    //         e.target.textContent === "Not Read";
+    //     } else {
+    //         e.target.textContent === "Read";
+    //     }
+    // });
+
+    deleteBook_btn.addEventListener('click', () => {
+        bookCard.remove(myLibrary.pop(bookCard.dataset.bookid));
+    });
+
 }
-addBookForm.addEventListener('submit', addBookToLibrary);
