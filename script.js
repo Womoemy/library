@@ -1,106 +1,94 @@
-let myLibrary = [];
-
-class Book {
-    constructor(title, author, pages, readStatus) {
-        // the constructor...
-        this.title = title;
-        this.author = author;
-        this.pages = pages;
-        this.readStatus = readStatus;
+let myLibrary = [
+    {
+        title: "Show Your Work!: 10 Ways to Share Your Creativity and Get Discovered",
+        author: "Austin Kleon",
+        pages: 224,
+        readStatus: "Read",
     }
+];
+
+function Book(title, author, pages, readStatus) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.readStatus = readStatus;
 }
 
-// DISPLAY ADD BOOK FORM LOGIC
-const addBookBtn = document.querySelector(".add-book-btn");
-const addBookForm = document.getElementById("addBookForm");
+// Book.prototype.toggleReadStatus = function (){
+    // console.log('before reassignment: ');
+    // console.log('read status - ' + this.isRead);
+    // this.isRead = true;
+    
+    // console.log('after reassignment: ');
+    // console.log('read status - ' + this.isRead);
+    // console.log("E don they work o!");
+// }
 
-addBookBtn.addEventListener('click', () => {
-    if (addBookForm.style.display !== "block") {
-        addBookForm.style.display = "block";
-    } else {
-        addBookForm.style.display = "none";
-    }
+/* global variables
+ ==================================================================*/
+ const $form = document.querySelector('form');
+ const $title = document.getElementById('title');
+ const $author = document.getElementById('author');
+ const $pages = document.getElementById('pages');
+ const $readStatus = document.getElementById('readStatus');
+ 
+ const $book_container = document.querySelector('.container');
+
+/* worker functions 
+ ==================================================================*/
+const newBook = new Book($title.value, $author.value, $pages.value, $readStatus.value);
+
+Book.prototype.toggleReadStatus = function() {
+    console.log(`It might just be working. This is the current value of my read status option ${this.readStatus}`)
+}
+
+$form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    addBookToLibrary();
+    renderBook();
+    $form.reset();
 });
 
-addBookForm.addEventListener('submit', addBookToLibrary);
-
-// ADD BOOK TO LIBRARY LOGIC
-function addBookToLibrary(e) {
-    e.preventDefault();
-    // collect form data...
-    const addFormData = new FormData(e.target);
-    const addFormValues = Object.fromEntries(addFormData.entries());
-    addFormValues.readStatus = addFormData.get("readStatus");
-
-    // create new book from constructor with form data values...
-    const newBook = new Book(addFormValues.title, addFormValues.author, addFormValues.pages, addFormValues.readStatus);
+function addBookToLibrary() {
+    // const newBook = new Book($title.value, $author.value, $pages.value, $readStatus.value);
+    // console.log($author.value);
+    // console.log(newBook)
     myLibrary.push(newBook);
-
-    // clear form...
-    addBookForm.reset();
-
-    booksCard();
 }
 
-const main = document.querySelector("main");
-const bookContainer = document.querySelector(".container");
 
-function booksCard() {
-    let theTitle;
-    let theAuthor;
-    let thePagesNo;
-    let theReadStatus;
+/*  UI section
+ ==================================================================*/
 
-    // loop through myLibrary array and store values in variables...
-    for (let book in myLibrary) {
-        theTitle = myLibrary[book].title;
-        theAuthor = myLibrary[book].author;
-        thePagesNo = myLibrary[book].pages;
-        theReadStatus = myLibrary[book].readStatus;
-    }
+function renderBook() {
+    $book_container.innerHTML = "";
+    // let $book_card = document.createElement('div');
+    myLibrary.forEach((book) => {
+        const book_card = `
+            <div>
+                <h3>${book.title}</h3>
+                <p>${book.author}</p>
+                <p>${book.pages} pages</p>
+                <button id="isread-btn">${book.readStatus}</p>
+                <button>Delete</button>
+            </div>
+        `;
 
-
-    const bookCard = document.createElement("div");
-    let bookTitle_h3 = document.createElement("h3");
-    let bookAuthor_p = document.createElement("p");
-    let bookPages_p = document.createElement("p");
-    let bookPagesNo_span = document.createElement("span");
-    let readStatus_btn = document.createElement("button");
-    let deleteBook_btn = document.createElement("button");
-
-    bookCard.className = "book-card";
-    bookTitle_h3.textContent = theTitle;
-    bookAuthor_p.textContent = theAuthor;
-    bookPagesNo_span.textContent = thePagesNo;
-    bookPages_p.append(bookPagesNo_span, " pages")
-    readStatus_btn.textContent = theReadStatus;
-    deleteBook_btn.textContent = 'Remove';
-
-    bookCard.appendChild(bookTitle_h3);
-    bookCard.appendChild(bookAuthor_p);
-    bookCard.appendChild(bookPages_p);
-    bookCard.appendChild(readStatus_btn);
-    bookCard.appendChild(deleteBook_btn);
-
-    main.appendChild(bookContainer);
-    bookContainer.appendChild(bookCard);
-
-    myLibrary.forEach((book, index) => {
-        bookCard.dataset.bookid = `${index}`;
-    }); 
-    
-    // console.log(readStatus_btn.textContent);
-
-    // readStatus_btn.addEventListener('click', (e) => {
-    //     if(e.target.textContent !== "Read") {
-    //         e.target.textContent === "Not Read";
-    //     } else {
-    //         e.target.textContent === "Read";
-    //     }
-    // });
-
-    deleteBook_btn.addEventListener('click', () => {
-        bookCard.remove(myLibrary.pop(bookCard.dataset.bookid));
+        $book_container.insertAdjacentHTML('beforeend', book_card)
     });
-
+    const $isReadBtn = document.getElementById("isread-btn")
+    $isReadBtn.addEventListener('click', 
+    function() {
+        console.log("testing this click event 1, 2...click check")
+        // addBookToLibrary()
+        newBook.toggleReadStatus()
+    }
+    // newBook.toggleReadStatus()
+    )
 }
+renderBook();
+
+// const $isReadBtn = document.getElementById("isread-btn")
+// $isReadBtn.addEventListener('click', function() {
+//     console.log("testing this click event 1, 2...click check")
+// })
