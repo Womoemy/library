@@ -1,4 +1,5 @@
 const $books_table = document.querySelector('.container');
+const $add_book_form = document.querySelector('#addBookForm');
 
 let myLibrary = [
     {
@@ -62,19 +63,54 @@ function Book(title, author, pages, readStatus) {
 //     myLibrary.push(newBook);
 // }
 
+
 function displayBook() {
-    myLibrary.forEach((book) => {
+    myLibrary.forEach((bookObj) => {
         let book_entry = document.createElement('tr');
-        for (let value in book) {
+        // for (let value in book) {
+        //     let book_detail = document.createElement('td');
+        //     book_detail.innerHTML = book[value];
+        //     book_entry.appendChild(book_detail)
+        // }
+
+        // new fix
+        for (let value in bookObj) {
             let book_detail = document.createElement('td');
-            book_detail.innerHTML = book[value];
-            book_entry.appendChild(book_detail)
+            // book_detail.innerHTML = bookObj[value];
+
+            if (bookObj[value] == bookObj['readStatus']) {
+                let status_btn = document.createElement('button');
+                status_btn.innerText = bookObj['readStatus'];
+                // console.log(status_btn);
+                // book_detail.innerHTML = status_btn;
+                book_detail.appendChild(status_btn);
+                // console.log(book_detail);
+                // console.log("I caught a read status!");
+            } 
+            else {
+                // console.log(bookObj[value]);
+                // let book_detail = document.createElement('td');
+                book_detail.innerHTML = bookObj[value];
+                // book_entry.appendChild(book_detail);
+            }
+            book_entry.appendChild(book_detail);
+
         }
+
+        // =======================
+
         $books_table.appendChild(book_entry);
     });
 }
-
 displayBook();
+
+function openForm() {
+    if ($add_book_form.style.display === "none") {
+        $add_book_form.style.display = "block";
+    } else {
+        $add_book_form.style.display = "none"
+    }
+}
 
 
 

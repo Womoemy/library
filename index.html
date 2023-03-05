@@ -11,31 +11,34 @@
 <body>
     <header>
         <h1>Book Library</h1>
-        <!-- <button class="add-book-btn">Add Book</button> -->
+        <!-- <button class="add-book-btn">New Book</button> -->
     </header>
     <main>
-        <!-- <form action="" id="addBookForm">
-            <div>
-                <label for="title">Title</label>
-                <input type="text" name="title" id="title" placeholder="Title">
-            </div>
-            <div>
-                <label for="author">Author</label>
-                <input type="text" name="author" id="author" placeholder="Author">
-            </div>
-            <div>
-                <label for="pages">Pages</label>
-                <input type="number" name="pages" id="pages" placeholder="Pages">
-            </div>
-            <div>
-                <label for="readStatus">Have you read this book?</label>
-                <select name="status" id="readStatus">
-                    <option value="Read">Read</option>
-                    <option value="Not Read" selected>Not Read</option>
-                </select>
-            </div>
-            <input type="submit" value="Submit">
-        </form> -->
+        <button class="open-form" onclick="openForm()">Add Book</button>
+        <div class="form-popup" id="addBookForm">
+            <form action="#" class="form-container">
+                <div>
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title" placeholder="Title">
+                </div>
+                <div>
+                    <label for="author">Author</label>
+                    <input type="text" name="author" id="author" placeholder="Author">
+                </div>
+                <div>
+                    <label for="pages">Pages</label>
+                    <input type="number" name="pages" id="pages" placeholder="Pages">
+                </div>
+                <div>
+                    <label for="readStatus">Have you read this book?</label>
+                    <select name="status" id="readStatus">
+                        <option value="Read">Read</option>
+                        <option value="Not Read" selected>Not Read</option>
+                    </select>
+                </div>
+                <input type="submit" value="Submit">
+            </form>
+        </div>
         
 
         <table class="container">
@@ -47,10 +50,10 @@
                 <button>Remove</button>
             </tr> -->
             <tr>
-                <th>name</th>
-                <th>author</th>
-                <th>pages</th>
-                <th>read or not</th>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Length (pages)</th>
+                <th>Read or Not</th>
             </tr>
         </table>
     </main>
